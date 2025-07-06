@@ -3,7 +3,7 @@ name: Weather ETL Pipeline
 on:
   schedule:
     # Запускать каждый день в 08:00 UTC (11:00 МСК)
-    - cron: '0 8 * * *'
+    - cron: '0 3 * * *'
   workflow_dispatch:
 
 jobs:
