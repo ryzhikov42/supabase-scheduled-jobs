@@ -27,6 +27,7 @@ DB_CONFIG = {
 # Определение координат для нескольких городов
 cities = [
     {"latitude": 56.0104473, "longitude": 37.4670831},
+    {"latitude": 54.710128, "longitude": 20.5105838},
     # Добавьте другие города по необходимости
 ]
 
@@ -53,10 +54,11 @@ def convert_numpy_types(value):
         return bool(value)
     return value
 
-def process_batch(conn, batch):
+def process_batch(conn, batch, is_first_batch):
     with conn.cursor() as cursor:
-        cursor.execute("TRUNCATE TABLE lbn.weather_BUFFER")
-        conn.commit()
+        if is_first_batch:
+            cursor.execute("TRUNCATE TABLE lbn.weather_BUFFER")
+            conn.commit()
 
         args_str = ','.join(cursor.mogrify("(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", x).decode('utf-8') for x in batch)
         cursor.execute(f"INSERT INTO lbn.weather_BUFFER VALUES {args_str}")
@@ -121,6 +123,7 @@ try:
                 inclusive="left"
             )
             
+            is_first_batch_for_city = True
             for i in range(len(dates)):
                 row = [
                     dates[i],
@@ -144,18 +147,19 @@ try:
                 batch.append(processed_row)
                 
                 if len(batch) >= BATCH_SIZE:
-                    processed = process_batch(conn, batch)
+                    processed = process_batch(conn, batch, is_first_batch_for_city)
+                    is_first_batch_for_city = False
                     total_rows += processed
                     print(f"Обработано: {total_rows} строк")
                     batch = []
             
             if batch:
-                processed = process_batch(conn, batch)
+                processed = process_batch(conn, batch, is_first_batch_for_city)
                 total_rows += processed
                 print(f"Обработано: {total_rows} строк (финальный пакет)")
             
             print(f'Данные для города с координатами {city["latitude"]}, {city["longitude"]} добавлены')
-            time.sleep(5)  # Пауза между запросами для разных городов
+            time.sleep(1)  # Пауза между запросами для разных городов
 
         print(f"Всего загружено строк: {total_rows}")
 

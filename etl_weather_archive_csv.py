@@ -5,7 +5,7 @@ import os
 
 load_dotenv()
 
-CSV_FILE_PATH = r'C:\Users\user1\Desktop\openmeteo\_supabase_lobnya\lobnya_open_meteo.csv'
+CSV_FILE_PATH = r'C:\Users\user1\Desktop\openmeteo\_supabase_lobnya\archive_open_meteo.csv'
 BATCH_SIZE = 8000
 
 def process_batch(conn, batch):

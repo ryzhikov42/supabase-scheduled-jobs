@@ -12,15 +12,17 @@ openmeteo = openmeteo_requests.Client(session=retry_session)
 
 # Define the coordinates for multiple cities
 cities = [
-    {"latitude": 56.0271, "longitude": 37.4679},
-    #{"latitude": 55.7558, "longitude": 37.6176},
+    #{"latitude": 56.0271, "longitude": 37.4679},
+    {"latitude": 54.710128, "longitude": 20.5105838},
 ]
+
+end_date = "2025-07-29"
 
 # Define the URL and common parameters
 url = "https://archive-api.open-meteo.com/v1/archive"
 params_template = {
     "start_date": "1940-01-01",
-    "end_date": "2025-06-12",
+    "end_date": end_date,
     "daily": ["sunrise", "sunset"],
     "hourly": ["temperature_2m", "wind_speed_10m", "wind_direction_10m", "apparent_temperature",
                "precipitation", "rain", "showers", "snowfall", "snow_depth", "is_day", "sunshine_duration"],
@@ -69,7 +71,7 @@ for city in cities:
     all_hourly_data = pd.concat([all_hourly_data, hourly_dataframe], ignore_index=True)
 
     # Define the CSV file path
-    csv_file = r"C:\Users\user1\Desktop\openmeteo\lobnya_open_meteo.csv"
+    csv_file = r"C:\Users\user1\Desktop\openmeteo\_supabase_lobnya\archive_open_meteo.csv"
 
     # Append data to the CSV file if it exists, otherwise create a new file
     if os.path.exists(csv_file):
