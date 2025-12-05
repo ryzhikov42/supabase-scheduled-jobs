@@ -1,2 +1,6 @@
 .cache.sqlite
 как_делать.txt
+.env
+plan.txt
+.cache.sqlite
+dtp_processing.log

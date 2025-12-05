@@ -1,0 +1,15 @@
+1. Создаем виртуалку 
+python -m venv venv
+(последнее слово в примере venv может быть любым это название папки, но предлагаю оставить ее venv чтобы всегда было одинаково)
+
+2. Активация виртуальной среды
+source venv/Scripts/activate
+(перед активайцией нужно перейти в папку с твоим проектом)
+
+3. Скачивание библиотек в папку на основе файла requirements.txt в папку libraries
+pip download -r requirements.txt -d libraries 
+(важно, прежде чем выполнять команду перейди в папку где лежит файл requirements.txt)
+- если все хорошо появятся файлы с расширением .whl в папке назначения
+
+4. Установка (бен интернета) из папки libraries только тех бибилотек что в requirements.txt
+pip install --no-index --find-links=libraries -r requirements.txt
